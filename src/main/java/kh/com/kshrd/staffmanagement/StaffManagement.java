@@ -20,7 +20,6 @@ public class StaffManagement {
 
     public StaffManagement() {
 
-        // initialize some staff members
         staffMembers.add(new Volunteer(lastId++, "John Doe", "Phnom Penh", 100));
         staffMembers.add(new SalariedEmployee(lastId++, "Jane Doe", "Siem Reap", 1000, 100));
         staffMembers.add(new HourlySalaryEmployee(lastId++, "John Smith", "Battambang", 40, 10));
