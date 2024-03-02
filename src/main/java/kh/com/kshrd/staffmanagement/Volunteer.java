@@ -15,7 +15,7 @@ public class Volunteer extends StaffMember {
 
     @Override
     public double pay() {
-        return 0;
+        return salary;
     }
 
     @Override

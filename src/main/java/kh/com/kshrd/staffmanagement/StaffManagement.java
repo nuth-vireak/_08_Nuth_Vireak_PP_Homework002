@@ -35,7 +35,8 @@ public class StaffManagement {
         int option;
         do {
             displayMenuTable();
-            System.out.print("-> Choose an option : ");
+            System.out.println("-----------------------------");
+            System.out.print("-> Choose an option() : ");
             option = Integer.parseInt(input.nextLine());
 
             switch (option) {
@@ -43,16 +44,21 @@ public class StaffManagement {
                 case 2 -> updateEmployee();
                 case 3 -> displayEmployee();
                 case 4 -> removeEmployee();
-                case 5 -> System.out.println("Goodbye!");
+                case 5 -> {
+                    System.out.println();
+                    System.out.println("Goodbye!");
+                    System.exit(0);
+                }
                 default -> System.out.println("Invalid option!");
             }
-        } while (option != 5);
+        } while (true);
     }
 
     private void insertEmployee() {
 
+        System.out.println("");
         System.out.println("======* Insert Employee *======");
-        System.out.println("Choose an employee type : ");
+        System.out.println("Choose Type : ");
 
         Table table = new Table(4, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
         table.setColumnWidth(0, 20, 25);
@@ -81,7 +87,10 @@ public class StaffManagement {
 
     private void insertVolunteer() {
 
-        System.out.println("Id : " + lastId);
+        System.out.println();
+        System.out.println("-----------------------------");
+
+        System.out.println("ID : " + lastId);
 
         System.out.print("=> Enter Name : ");
         String name = input.nextLine();
@@ -96,12 +105,19 @@ public class StaffManagement {
 
         staffMembers.add(volunteer);
 
-        System.out.println("Volunteer added successfully!");
+        System.out.println("-----------------------------");
+        System.out.println("* You added " + volunteer.getName() + " of type " + volunteer.getClass().getSimpleName() + " successfully! *");
+        System.out.println();
+        System.out.print("Press Enter to continue...");
+        input.nextLine();
     }
 
     private void insertSalariedEmployee() {
 
-        System.out.println("Id : " + lastId);
+        System.out.println();
+        System.out.println("-----------------------------");
+
+        System.out.println("ID : " + lastId);
 
         System.out.print("=> Enter Name : ");
         String name = input.nextLine();
@@ -117,18 +133,24 @@ public class StaffManagement {
 
         SalariedEmployee salariedEmployee = new SalariedEmployee(lastId++, name, address, salary, bonus);
 
-        System.out.println("=> Pay : " + salariedEmployee.pay());
+        System.out.println("=> Payment : " + salariedEmployee.pay());
 
         staffMembers.add(salariedEmployee);
 
-        System.out.println("Salaried Employee added successfully!");
+        System.out.println("-----------------------------");
+        System.out.println("* You added " + salariedEmployee.getName() + " of type " + salariedEmployee.getClass().getSimpleName() + " successfully! *");
+        System.out.println();
 
-        System.out.println(salariedEmployee);
+        System.out.print("Press Enter to continue...");
+        input.nextLine();
     }
 
     private void insertHourlyEmployee() {
 
-        System.out.println("Id : " + lastId);
+        System.out.println();
+        System.out.println("-----------------------------");
+
+        System.out.println("ID : " + lastId);
 
         System.out.print("=> Enter Name : ");
         String name = input.nextLine();
@@ -144,24 +166,25 @@ public class StaffManagement {
 
         HourlySalaryEmployee hourlySalaryEmployee = new HourlySalaryEmployee(lastId++, name, address, hoursWorked, rate);
 
-        System.out.println("=> Pay : " + hourlySalaryEmployee.pay());
+        System.out.println("=> Payment : " + hourlySalaryEmployee.pay());
 
         staffMembers.add(hourlySalaryEmployee);
 
-        System.out.println("Hourly Employee added successfully!");
+        System.out.println("-----------------------------");
+        System.out.println("* You added " + hourlySalaryEmployee.getName() + " of type " + hourlySalaryEmployee.getClass().getSimpleName() + " successfully! *");
+        System.out.println();
 
-        System.out.println(hourlySalaryEmployee);
+        System.out.print("Press Enter to continue...");
+        input.nextLine();
     }
 
     private void updateEmployee() {
 
+        System.out.println("");
+
         System.out.println("======* Update Employee *======");
         System.out.print("=> Enter or Search ID to update : ");
         int id = Integer.parseInt(input.nextLine());
-
-        // display table in dynamic way if id is an instance of Volunteer display volunteer table
-        // if id is an instance of SalariedEmployee display salaried employee table
-        // if id is an instance of HourlySalaryEmployee display hourly employee table
 
         for (StaffMember staffMember : staffMembers) {
             if (staffMember.getId() == id) {
@@ -181,9 +204,9 @@ public class StaffManagement {
             displayHourlyEmployeeTable(staffMember);
 
             System.out.println("=> Choose one column to update : ");
-            System.out.println("1. Name \t 2. Address \t 3. Hours Worked \t 4. Rate \t 5. Back");
+            System.out.println("1. Name \t 2. Address \t 3. Hours Worked \t 4. Rate \t 0. Cancel");
 
-            System.out.println("=> Enter column number : ");
+            System.out.print("=> Enter column number : ");
             int column = Integer.parseInt(input.nextLine());
 
             switch (column) {
@@ -191,40 +214,47 @@ public class StaffManagement {
                     System.out.print("=> Enter new Name : ");
                     String name = input.nextLine();
                     staffMember.setName(name);
-                    displayHourlyEmployeeTable(staffMember);
+                    System.out.println("* Name updated successfully! *");
+                    updateHourlyEmployee(staffMember);
                 }
                 case 2 -> {
                     System.out.print("=> Enter new Address : ");
                     String address = input.nextLine();
                     staffMember.setAddress(address);
-                    displayHourlyEmployeeTable(staffMember);
+                    System.out.println("* Address updated successfully! *");
+                    updateHourlyEmployee(staffMember);
                 }
                 case 3 -> {
                     System.out.print("=> Enter new Hours Worked : ");
                     int hoursWorked = Integer.parseInt(input.nextLine());
                     staffMember.setHoursWorked(hoursWorked);
-                    displayHourlyEmployeeTable(staffMember);
+                    System.out.println("* Hours Worked updated successfully! *");
+                    updateHourlyEmployee(staffMember);
                 }
                 case 4 -> {
                     System.out.print("=> Enter new Rate : ");
                     double rate = Double.parseDouble(input.nextLine());
                     staffMember.setRate(rate);
-                    displayHourlyEmployeeTable(staffMember);
+                    System.out.println("* Rate updated successfully! *");
+                    updateHourlyEmployee(staffMember);
                 }
-                case 5 -> displayMenu();
+                case 0 -> displayMenu();
                 default -> System.out.println("Invalid option!");
             }
     }
 
     private void displayHourlyEmployeeTable(HourlySalaryEmployee staffMember) {
+
+        System.out.println();
+
         Table table = new Table(7, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
-        table.setColumnWidth(0, 10, 10);
+        table.setColumnWidth(0, 20, 25);
         table.setColumnWidth(1, 10, 10);
-        table.setColumnWidth(2, 10, 10);
-        table.setColumnWidth(3, 10, 10);
-        table.setColumnWidth(4, 10, 10);
-        table.setColumnWidth(5, 10, 10);
-        table.setColumnWidth(6, 10, 10);
+        table.setColumnWidth(2, 20, 20);
+        table.setColumnWidth(3, 20, 25);
+        table.setColumnWidth(4, 10, 25);
+        table.setColumnWidth(5, 10, 25);
+        table.setColumnWidth(6, 10, 25);
 
         table.addCell("Type", centerStyle);
         table.addCell("ID", centerStyle);
@@ -239,10 +269,12 @@ public class StaffManagement {
         table.addCell(staffMember.getName(), centerStyle);
         table.addCell(staffMember.getAddress(), centerStyle);
         table.addCell(String.valueOf(staffMember.getHoursWorked()), centerStyle);
-        table.addCell(String.valueOf(staffMember.getRate()), centerStyle);
-        table.addCell(String.valueOf(staffMember.pay()), centerStyle);
+        table.addCell("$" + String.format("%.2f", staffMember.getRate()), centerStyle);
+        table.addCell("$" + String.format("%.2f", staffMember.pay()), centerStyle);
 
         System.out.println(table.render());
+
+        System.out.println();
     }
 
     private void updateSalariedEmployee(SalariedEmployee staffMember) {
@@ -250,9 +282,9 @@ public class StaffManagement {
         displaySalariedEmployeeTable(staffMember);
 
         System.out.println("=> Choose one column to update : ");
-        System.out.println("1. Name \t 2. Address \t 3. Salary \t 4. Bonus \t 5. Back");
+        System.out.println("1. Name \t 2. Address \t 3. Salary \t 4. Bonus \t 0. Cancel");
 
-        System.out.println("=> Enter column number : ");
+        System.out.print("=> Enter column number : ");
         int column = Integer.parseInt(input.nextLine());
 
         switch (column) {
@@ -260,41 +292,48 @@ public class StaffManagement {
                 System.out.print("=> Enter new Name : ");
                 String name = input.nextLine();
                 staffMember.setName(name);
-                displaySalariedEmployeeTable(staffMember);
+                System.out.println("* Name updated successfully! *");
+                updateSalariedEmployee(staffMember);
             }
             case 2 -> {
                 System.out.print("=> Enter new Address : ");
                 String address = input.nextLine();
                 staffMember.setAddress(address);
-                displaySalariedEmployeeTable(staffMember);
+                System.out.println("* Address updated successfully! *");
+                updateSalariedEmployee(staffMember);
             }
             case 3 -> {
                 System.out.print("=> Enter new Salary : ");
                 double salary = Double.parseDouble(input.nextLine());
                 staffMember.setSalary(salary);
-                displaySalariedEmployeeTable(staffMember);
+                System.out.println("* Salary updated successfully! *");
+                updateSalariedEmployee(staffMember);
             }
             case 4 -> {
                 System.out.print("=> Enter new Bonus : ");
                 double bonus = Double.parseDouble(input.nextLine());
                 staffMember.setBonus(bonus);
-                displaySalariedEmployeeTable(staffMember);
+                System.out.println("* Bonus updated successfully! *");
+                updateSalariedEmployee(staffMember);
             }
-            case 5 -> displayMenu();
+            case 0 -> displayMenu();
             default -> System.out.println("Invalid option!");
         }
 
     }
 
     private void displaySalariedEmployeeTable(SalariedEmployee staffMember) {
+
+        System.out.println();
+
         Table table = new Table(7, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
-        table.setColumnWidth(0, 10, 10);
+        table.setColumnWidth(0, 20, 25);
         table.setColumnWidth(1, 10, 10);
-        table.setColumnWidth(2, 10, 10);
-        table.setColumnWidth(3, 10, 10);
-        table.setColumnWidth(4, 10, 10);
-        table.setColumnWidth(5, 10, 10);
-        table.setColumnWidth(6, 10, 10);
+        table.setColumnWidth(2, 20, 20);
+        table.setColumnWidth(3, 20, 25);
+        table.setColumnWidth(4, 10, 25);
+        table.setColumnWidth(5, 10, 25);
+        table.setColumnWidth(6, 10, 25);
 
         table.addCell("Type", centerStyle);
         table.addCell("ID", centerStyle);
@@ -308,11 +347,13 @@ public class StaffManagement {
         table.addCell(String.valueOf(staffMember.getId()), centerStyle);
         table.addCell(staffMember.getName(), centerStyle);
         table.addCell(staffMember.getAddress(), centerStyle);
-        table.addCell(String.valueOf(staffMember.getSalary()), centerStyle);
-        table.addCell(String.valueOf(staffMember.getBonus()), centerStyle);
-        table.addCell(String.valueOf(staffMember.pay()), centerStyle);
+        table.addCell("$" + String.format("%.2f", staffMember.getSalary()), centerStyle);
+        table.addCell("$" + String.format("%.2f", staffMember.getBonus()), centerStyle);
+        table.addCell("$" + String.format("%.2f", staffMember.pay()), centerStyle);
 
         System.out.println(table.render());
+
+        System.out.println();
     }
 
     private void updateVolunteer(Volunteer staffMember) {
@@ -320,9 +361,9 @@ public class StaffManagement {
         displayVolunteerTable(staffMember);
 
         System.out.println("=> Choose one column to update : ");
-        System.out.println("1. Name \t 2. Address \t 3. Salary \t 4. Back");
+        System.out.println("1. Name \t 2. Address \t 3. Salary \t 0. Cancel");
 
-        System.out.println("=> Enter column number : ");
+        System.out.print("=> Select Column Number : ");
         int column = Integer.parseInt(input.nextLine());
 
         switch (column) {
@@ -330,33 +371,39 @@ public class StaffManagement {
                 System.out.print("=> Enter new Name : ");
                 String name = input.nextLine();
                 staffMember.setName(name);
-                displayVolunteerTable(staffMember);
+                System.out.println("* Name updated successfully! *");
+                updateVolunteer(staffMember);
             }
             case 2 -> {
                 System.out.print("=> Enter new Address : ");
                 String address = input.nextLine();
                 staffMember.setAddress(address);
-                displayVolunteerTable(staffMember);
+                System.out.println("* Address updated successfully! *");
+                updateVolunteer(staffMember);
             }
             case 3 -> {
                 System.out.print("=> Enter new Salary : ");
                 double salary = Double.parseDouble(input.nextLine());
                 staffMember.setSalary(salary);
-                displayVolunteerTable(staffMember);
+                System.out.println("* Salary updated successfully! *");
+                updateVolunteer(staffMember);
             }
-            case 4 -> displayMenu();
+            case 0 -> displayMenu();
             default -> System.out.println("Invalid option!");
         }
     }
 
     private void displayVolunteerTable(Volunteer staffMember) {
+
+        System.out.println();
+
         Table table = new Table(6, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
-        table.setColumnWidth(0, 10, 10);
+        table.setColumnWidth(0, 20, 25);
         table.setColumnWidth(1, 10, 10);
-        table.setColumnWidth(2, 10, 10);
-        table.setColumnWidth(3, 10, 10);
-        table.setColumnWidth(4, 10, 10);
-        table.setColumnWidth(5, 10, 10);
+        table.setColumnWidth(2, 20, 20);
+        table.setColumnWidth(3, 20, 25);
+        table.setColumnWidth(4, 10, 25);
+        table.setColumnWidth(5, 10, 25);
 
         table.addCell("Type", centerStyle);
         table.addCell("ID", centerStyle);
@@ -369,25 +416,27 @@ public class StaffManagement {
         table.addCell(String.valueOf(staffMember.getId()), centerStyle);
         table.addCell(staffMember.getName(), centerStyle);
         table.addCell(staffMember.getAddress(), centerStyle);
-        table.addCell(String.valueOf(staffMember.getSalary()), centerStyle);
-        table.addCell("0", centerStyle);
+        table.addCell("$" + String.format("%.2f", staffMember.getSalary()), centerStyle);
+        table.addCell("$" + String.format("%.2f", staffMember.pay()), centerStyle);
 
         System.out.println(table.render());
+
+        System.out.println();
     }
 
     private void displayEmployee() {
 
         Table table = new Table(9, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
         //Type ID Name Address Salary Bonus Hour Rate Pay
-        table.setColumnWidth(0, 10, 10);
-        table.setColumnWidth(1, 10, 10);
-        table.setColumnWidth(2, 10, 10);
-        table.setColumnWidth(3, 10, 10);
-        table.setColumnWidth(4, 10, 10);
-        table.setColumnWidth(5, 10, 10);
-        table.setColumnWidth(6, 10, 10);
-        table.setColumnWidth(7, 10, 10);
-        table.setColumnWidth(8, 10, 10);
+        table.setColumnWidth(0, 25, 35);
+        table.setColumnWidth(1, 10, 35);
+        table.setColumnWidth(2, 20, 35);
+        table.setColumnWidth(3, 20, 35);
+        table.setColumnWidth(4, 13, 35);
+        table.setColumnWidth(5, 13, 35);
+        table.setColumnWidth(6, 13, 35);
+        table.setColumnWidth(7, 13, 35);
+        table.setColumnWidth(8, 13, 35);
 
         table.addCell("Type", centerStyle);
         table.addCell("ID", centerStyle);
@@ -405,21 +454,21 @@ public class StaffManagement {
                 table.addCell(String.valueOf(staffMember.getId()), centerStyle);
                 table.addCell(staffMember.getName(), centerStyle);
                 table.addCell(staffMember.getAddress(), centerStyle);
-                table.addCell(String.valueOf(((Volunteer) staffMember).getSalary()), centerStyle);
+                table.addCell("$" + String.format("%.2f", ((Volunteer) staffMember).getSalary()), centerStyle);
                 table.addCell("---", centerStyle);
                 table.addCell("---", centerStyle);
                 table.addCell("---", centerStyle);
-                table.addCell("0", centerStyle);
+                table.addCell("$" + String.format("%.2f", staffMember.pay()), centerStyle);
             } else if (staffMember instanceof SalariedEmployee) {
                 table.addCell("Salaries Employee", centerStyle);
                 table.addCell(String.valueOf(staffMember.getId()), centerStyle);
                 table.addCell(staffMember.getName(), centerStyle);
                 table.addCell(staffMember.getAddress(), centerStyle);
-                table.addCell(String.valueOf(((SalariedEmployee) staffMember).getSalary()), centerStyle);
-                table.addCell(String.valueOf(((SalariedEmployee) staffMember).getBonus()), centerStyle);
+                table.addCell("$" + String.format("%.2f", ((SalariedEmployee) staffMember).getSalary()), centerStyle);
+                table.addCell("$" + String.format("%.2f", ((SalariedEmployee) staffMember).getBonus()), centerStyle);
                 table.addCell("---", centerStyle);
                 table.addCell("---", centerStyle);
-                table.addCell(String.valueOf(staffMember.pay()), centerStyle);
+                table.addCell("$" + String.format("%.2f", staffMember.pay()), centerStyle);
             } else if (staffMember instanceof HourlySalaryEmployee) {
                 table.addCell("Hourly Employee", centerStyle);
                 table.addCell(String.valueOf(staffMember.getId()), centerStyle);
@@ -427,9 +476,9 @@ public class StaffManagement {
                 table.addCell(staffMember.getAddress(), centerStyle);
                 table.addCell("---", centerStyle);
                 table.addCell("---", centerStyle);
-                table.addCell(String.valueOf(((HourlySalaryEmployee) staffMember).getHoursWorked()), centerStyle);
-                table.addCell(String.valueOf(((HourlySalaryEmployee) staffMember).getRate()), centerStyle);
-                table.addCell(String.valueOf(staffMember.pay()), centerStyle);
+                table.addCell( String.valueOf(((HourlySalaryEmployee) staffMember).getHoursWorked()), centerStyle);
+                table.addCell("$" + String.format("%.2f", ((HourlySalaryEmployee) staffMember).getRate()), centerStyle);
+                table.addCell("$" + String.format("%.2f", staffMember.pay()), centerStyle);
             }
         }
 
@@ -453,9 +502,10 @@ public class StaffManagement {
     }
 
     private void displayMenuTable() {
+        System.out.println("");
         String padding = " ".repeat(5);
 
-        Table table = new Table(1, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.ALL);
+        Table table = new Table(1, BorderStyle.UNICODE_BOX_DOUBLE_BORDER, ShownBorders.SURROUND_HEADER_AND_COLUMNS);
 
         table.setColumnWidth(0, 50, 50);
 
